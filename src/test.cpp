@@ -68,6 +68,8 @@ TEST_F(StaticMediatorTester, constConstructedDoesNotPointToOldMediator)
 {
    Mediator m3(m);
    EXPECT_EQ(&m3.getS1().i, &m3.getS2().getMediator().getS1().i);
+   EXPECT_EQ(&m3, &m3.getS2().getMediator());
+   EXPECT_NE(&m, &m3.getS2().getMediator());
 }
 
 TEST_F(StaticMediatorTester, AssignedDoesNotPointToOldMediator)
@@ -79,6 +81,7 @@ TEST_F(StaticMediatorTester, AssignedDoesNotPointToOldMediator)
    EXPECT_EQ(m2.getS1().i, 1);
 
    EXPECT_EQ(&m.getS1().i, &m.getS2().getMediator().getS1().i);
+   EXPECT_EQ(&m2,&m2.getS1().getMediator());
    EXPECT_EQ(m2.getS1().i, m.getS1().i);
    EXPECT_EQ(m2.getS2().s, m.getS2().s);
 }
@@ -87,4 +90,5 @@ TEST_F(StaticMediatorTester, MoveOperatorDoesNotPointToOldMediator)
 {
    Mediator m3(std::move(m));
    EXPECT_EQ(&m3.getS1().i, &m3.getS2().getMediator().getS1().i);
+   EXPECT_NE(&m3.getS1().getMediator(),&m);
 }
